@@ -48,7 +48,7 @@
   "codanasals" : {
     "COD_M"   : { "dieghv" : "m",   "gdpi": "m"  , "ggn" : "m"  , "ggnn" : "m"  , "tlo" : "m", "tailo" : "m"   },
     "COD_NG"  : { "dieghv" : "ng",  "gdpi": "ng" , "ggn" : "ng" , "ggnn" : "ng" , "tlo" : "ng", "tailo" : "ng"  },
-    "COD_N"   : {                                                 "ggnn" : "n"  , "tlo" : "n", "tailo" : "n"   }
+    "COD_N"   : {                                  "ggn" : "ng" , "ggnn" : "ng"  , "tlo" : "ng", "tailo" : "n"   }
   },
   "codastops" : {
     "COD_P"   : { "dieghv" : "p",   "gdpi": "b"   ,"ggn" : "p"  , "ggnn" : "p"  , "tlo" : "p", "tailo" : "p"   },
