@@ -59,7 +59,7 @@ medial : MED_AI  | MED_AU
        | MED_IA  | MED_IAU | MED_IEU | MED_IOU | MED_IU  | MED_IE  | MED_IO  
        | MED_OI  | MED_OU  
        | MED_UAI | MED_UA  | MED_UE  | MED_UI  
-       | MED_A   | MED_V   | MED_E   | MED_I   | MED_O   | MED_U   
+       | MED_A   | MED_V   | MED_E   | MED_I   | MED_O   | MED_U | MED_NG | MED_M 
 // Punctuation and spacing
 PUNCTUATION : "." | "," | ":" | ";" | "?" | "!" | "'" | "-" | "(" | ")" | "[" | "]" | "“" | "”" | "‘" | "’"
 SPACE : " "
@@ -138,10 +138,24 @@ TONENUMBER : "0".."8"
 SYLLABLE_SEP : "-" | "'" | "’"
 """
 
+RULES[
+    "tailo"
+] = """
+// Codas
+coda : codanasal | codastops
+codanasal : COD_M | COD_NG | COD_N
+codastops : COD_P | COD_K | COD_H | COD_T
+// Tones
+tone : TONENUMBER [ "(" TONENUMBER ")" ]
+TONENUMBER : "0".."8"
+// syllable separators can be hyphen or apostrophes
+SYLLABLE_SEP : "-" | "'" | "’"
+"""
+
 # Available input formats for parsers
 PARSER_DICT = {}
 LARK_DICT = {}
-for scheme in ["dieghv", "gdpi", "ggn", "ggnn", "tlo"]:
+for scheme in ["dieghv", "gdpi", "ggn", "ggnn", "tlo", "tailo"]:
     lark_rules = [RULES["common"], RULES[scheme]]
     for group in TERMINALS:
         for term in TERMINALS[group]:
@@ -159,6 +173,7 @@ TRANSFORMER_DICT = {
     "duffus": translit.Duffus(),
     "sinwz": translit.Sinwz(),
     "15": translit.Zapngou(),
+    "tailo": translit.Tailo(),
 }
 
 
@@ -178,6 +193,7 @@ def tlo_syllable_parse(syllable):
         774: 6,  # 0x306
         780: 6,  # 0x30C combining caron, often confused with combining breve
         772: 7,  # 0x304
+        781: 5,  # tailo 8 tonemark
     }
     notone = []
     tone = 1  # default tone

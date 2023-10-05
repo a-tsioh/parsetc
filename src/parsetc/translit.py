@@ -676,3 +676,96 @@ class Zapngou(Transformer):
 
     def sentence(self, items):
         return "".join(items)
+
+class Tailo(Transformer):
+    """Convert Teochew pengim parse tree to Tai-lo (closest Taiwanese syllable)"""
+    """ (mostly copied from Tlo) """
+
+    def NASAL(self, value):
+        return "nn"
+
+    def SYLLABLE_SEP(self, value):
+        # Change all syllable separators to hyphens
+        return "-"
+
+    def initial(self, items):
+        trdict = {
+            term: TERMINALS["initials"][term]["tailo"]
+            for term in TERMINALS["initials"]
+            if "tailo" in TERMINALS["initials"][term]
+        }
+        return trdict[items[0].type]
+
+    def medial(self, items):
+        trdict = {
+            term: TERMINALS["medials"][term]["tlo"]
+            for term in TERMINALS["medials"]
+            if "tailo" in TERMINALS["medials"][term]
+        }
+        return trdict[items[0].type]
+
+    def coda(self, items):
+        return "".join([str(i) for i in items])
+
+    def codastops(self, items):
+        trdict = {
+            term: TERMINALS["codastops"][term]["tlo"]
+            for term in TERMINALS["codastops"]
+            if "tailo" in TERMINALS["codastops"][term]
+        }
+        return trdict[items[0].type]
+
+    def codanasal(self, items):
+        trdict = {
+            term: TERMINALS["codanasals"][term]["tlo"]
+            for term in TERMINALS["codanasals"]
+            if "tailo" in TERMINALS["codanasals"][term]
+        }
+        return trdict[items[0].type]
+
+    def final(self, items):
+        return "".join([str(i) for i in items])
+
+    def tone(self, items):
+        # Only return the citation tone
+        return str(items[0])
+
+    def syllable_tone(self, items):
+        # Tie-lo is less straightforward because it marks
+        # tones with diacritics
+        trdict = {
+            "1": "",
+            "2": "\u0301",
+            "3": "\u0300",
+            "4": "",
+            "5": "\u0302",
+            "6": "\u0306",
+            "7": "\u0304",
+            "8": "\u030d",
+        }
+        # TODO put tone mark on first vowel letter else on first letter of final
+        syllab = "".join(items[:-1])  # syllable without tone
+        tone = items[-1]
+        firstvowel = re.search(r"[aeiou]", syllab)
+        if firstvowel:
+            # put tone mark on first vowel letter
+            inspos = firstvowel.span()[1]
+            syllab = syllab[0:inspos] + trdict[tone] + syllab[inspos:]
+        else:
+            # no vowel in syllable, put on first character
+            syllab = syllab[0] + trdict[tone] + syllab[1:]
+        return syllab
+
+    def syllable_toneless(self, items):
+        return "".join([str(i) for i in items])
+
+    def word_sep(self, items):
+        # replace all syllable separators with hyphens
+        # and separate syllables with hyphens if no
+        # syllable separator is present
+        return "-".join([i for i in items if i != "-"])
+
+    def sentence(self, items):
+        return "".join(items)
+
+
