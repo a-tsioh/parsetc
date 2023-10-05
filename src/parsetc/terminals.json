@@ -57,6 +57,6 @@
     "COD_T"   : {                                  "ggn" : "t"  , "ggnn" : "t"  , "tlo" : "t", "tailo" : "t"   }
   },
   "nasal" : {
-    "NASAL"   : { "dieghv" : "n",   "gdpi": "n",   "ggn" : "n"  , "ggnn" : "ñ"  , "tlo" : "nn", "tailo" : "nn"  }
+    "NASAL"   : { "dieghv" : "n",   "gdpi": "n",   "ggn" : "n"  , "ggnn" : "n"  , "tlo" : "nn", "tailo" : "nn"  }
   }
 }

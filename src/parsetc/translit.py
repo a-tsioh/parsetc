@@ -81,7 +81,7 @@ class Ggnn(Transformer):
     """Convert Teochew pengim parse tree to Gaginang Peng'im"""
 
     def NASAL(self, value):
-        return "ñ"
+        return "n"
 
     def initial(self, items):
         trdict = {
